@@ -16,6 +16,14 @@ createServer({
           type: "deposit",
           created_at: new Date(),
         },
+        {
+          id: 2,
+          title: "Aluguel",
+          amount: 300,
+          category: "Moradia",
+          type: "withdraw",
+          created_at: new Date(),
+        },
       ]
     })
   },
