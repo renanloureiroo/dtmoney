@@ -32,7 +32,7 @@ export const TransactionsTable = () => {
         <tbody>
           {transactions &&
             transactions.map((transaction) => (
-              <tr>
+              <tr key={transaction.id}>
                 <td>{transaction.title}</td>
                 <td className={transaction.type}>{transaction.amount}</td>
                 <td>{transaction.category}</td>
