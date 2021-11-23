@@ -5,6 +5,7 @@ import { Container, RadioBox, TransactionTypeContainer } from "./styles"
 import incomeIMG from "../../assets/income.svg"
 import outcomeIMG from "../../assets/outcome.svg"
 import closeIMG from "../../assets/close.svg"
+import { api } from "../../service/api"
 interface NewTransactionModalProps {
   isOpen: boolean
   onRequestClose: () => void
@@ -21,7 +22,13 @@ export const NewTransactionModal = ({
 
   const handleCreateNewTransaction = (event: FormEvent) => {
     event.preventDefault()
-    console.log({ title, value, category, type })
+    const data = {
+      title,
+      value,
+      category,
+      type,
+    }
+    api.post("/transactions", data)
   }
 
   return (
@@ -50,7 +57,6 @@ export const NewTransactionModal = ({
         <input
           type="number"
           placeholder="Valor"
-          value={value}
           onChange={(event) => setValue(Number(event.target.value))}
         />
         <TransactionTypeContainer>
