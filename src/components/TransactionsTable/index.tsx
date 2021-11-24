@@ -1,10 +1,11 @@
-import { useContext } from "react"
+import { useTransactions } from "../../hooks/useTransactions"
+
 import { Toaster } from "react-hot-toast"
-import { TransactionsContext } from "../../TransactionsContext"
+
 import { Container } from "./styles"
 
 export const TransactionsTable = () => {
-  const { transactions } = useContext(TransactionsContext)
+  const { transactions } = useTransactions()
 
   return (
     <Container>

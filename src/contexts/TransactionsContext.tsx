@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useEffect, useState } from "react"
-import { api } from "./service/api"
+import { api } from "../service/api"
 
 interface Transaction {
   id: number
