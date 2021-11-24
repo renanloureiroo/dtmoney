@@ -1,11 +1,12 @@
-import { FormEvent, useState } from "react"
+import { FormEvent, useContext, useState } from "react"
 import Modal from "react-modal"
 import { Container, RadioBox, TransactionTypeContainer } from "./styles"
 
 import incomeIMG from "../../assets/income.svg"
 import outcomeIMG from "../../assets/outcome.svg"
 import closeIMG from "../../assets/close.svg"
-import { api } from "../../service/api"
+import { TransactionsContext } from "../../TransactionsContext"
+import toast from "react-hot-toast"
 interface NewTransactionModalProps {
   isOpen: boolean
   onRequestClose: () => void
@@ -17,18 +18,29 @@ export const NewTransactionModal = ({
 }: NewTransactionModalProps) => {
   const [type, setType] = useState("deposit")
   const [title, setTitle] = useState("")
-  const [value, setValue] = useState(0)
+  const [amount, setAmount] = useState(0)
   const [category, setCategory] = useState("")
 
-  const handleCreateNewTransaction = (event: FormEvent) => {
+  const { createTransaction } = useContext(TransactionsContext)
+
+  const clearAndCloseForm = () => {
+    setTitle("")
+    setAmount(0)
+    setCategory("")
+    setType("deposit")
+    onRequestClose()
+  }
+
+  const handleCreateNewTransaction = async (event: FormEvent) => {
     event.preventDefault()
-    const data = {
-      title,
-      value,
-      category,
-      type,
+
+    try {
+      await createTransaction({ title, amount: amount, category, type })
+      clearAndCloseForm()
+      toast.success("Sucesso")
+    } catch (err) {
+      toast.error("Erro!")
     }
-    api.post("/transactions", data)
   }
 
   return (
@@ -57,7 +69,8 @@ export const NewTransactionModal = ({
         <input
           type="number"
           placeholder="Valor"
-          onChange={(event) => setValue(Number(event.target.value))}
+          value={amount}
+          onChange={(event) => setAmount(Number(event.target.value))}
         />
         <TransactionTypeContainer>
           <RadioBox
